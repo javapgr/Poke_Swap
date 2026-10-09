@@ -342,6 +342,8 @@ Las pruebas de humo verifican inicio, colección, Pokédex, ruta docente, fallba
 
 La configuración está en `wrangler.jsonc`; el Worker se llama `pokeswap-classroom`. Vite genera la configuración final del despliegue junto al build. Los scripts usan Wrangler instalado en el proyecto, sin depender de la versión global.
 
+Para desplegar esta SPA en Vercel, basta con el build de Vite y con una variable `VITE_API_BASE_URL` cuando el backend no esté en el mismo origen. En el valor por defecto se conserva el mismo origen; si se apunta a un worker o API externa, la app enviará cookies con `credentials: 'include'` y usará la URL base configurada. El proyecto queda preparado para Node 22 en local y para despliegues Vercel/Node 20-22 en entornos de build.
+
 Para publicar desde otra máquina, iniciar sesión con `npx wrangler login`, verificar la cuenta con `npx wrangler whoami` y ejecutar `npm run deploy`. La integración continua valida las PR; todavía no publica automáticamente ni requiere secretos de Cloudflare en GitHub.
 
 No se incluyen credenciales ni secretos en Git. `.local/`, `.env*`, `.dev.vars*`, `.wrangler/`, `dist/` y dependencias están excluidos. Esta base no requiere variables secretas. D1 está configurado con el binding `DB` y bases separadas para producción y pruebas. Validar migraciones localmente y en pruebas antes de aplicarlas a producción; `deploy` no las aplica automáticamente. Las pruebas de Vitest usan otra base temporal y no requieren acceso a tus bases remotas. R2 está configurado con buckets privados separados y limpieza programada; los servicios del juego siguen pendientes.
