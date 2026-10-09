@@ -14,7 +14,7 @@ Repositorio: [carevalojesus/PokeSwap](https://github.com/carevalojesus/PokeSwap)
 
 ## Interfaz disponible
 
-Explora el [catálogo público](https://pokeswap-classroom.christian-ar-valo-jes-s.workers.dev/pokedex), busca especies por nombre o número y consulta las reglas. Puedes [crear tu cuenta de alumno](https://pokeswap-classroom.christian-ar-valo-jes-s.workers.dev/registro) o [ingresar](https://pokeswap-classroom.christian-ar-valo-jes-s.workers.dev/ingresar) con tu ID y contraseña. Alumnos y docente comparten el formulario de acceso. El perfil propio, el inicial y la colección son reales; ranking y gestión docente siguen en sus issues. Ver [sesión y formularios](docs/ACCESO.md) y [perfil editable](docs/PERFIL.md).
+Explora el [catálogo público](), busca especies por nombre o número y consulta las reglas. Puedes [crear tu cuenta de alumno](https://pokeswap-classroom.christian-ar-valo-jes-s.workers.dev/registro) o [ingresar](https://pokeswap-classroom.christian-ar-valo-jes-s.workers.dev/ingresar) con tu ID y contraseña. Alumnos y docente comparten el formulario de acceso. El perfil propio, el inicial y la colección son reales; ranking y gestión docente siguen en sus issues. Ver [sesión y formularios](docs/ACCESO.md) y [perfil editable](docs/PERFIL.md).
 
 Ver [componentes, rutas y pruebas de navegador](docs/INTERFAZ.md). Tras `npm run build`, ejecuta `npx playwright install chromium webkit` y `npm run test:ui` para comprobar la interfaz.
 
