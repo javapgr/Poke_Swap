@@ -15,16 +15,36 @@ export class ApiError extends Error {
   }
 }
 
+function getApiConfig(path: string) {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '');
+  const credentials: RequestCredentials = baseUrl
+    ? 'include'
+    : 'same-origin';
+  const requestPath = baseUrl
+    ? new URL(
+        path,
+        baseUrl.endsWith('/api') ? `${baseUrl}/` : `${baseUrl}/`,
+      ).toString()
+    : path;
+
+  return {
+    baseUrl,
+    requestPath,
+    credentials,
+  };
+}
+
 export async function request(path: string, options: RequestInit = {}) {
   try {
+    const { requestPath, credentials } = getApiConfig(path);
     const timeout = AbortSignal.timeout(15_000);
     const signal = options.signal
       ? AbortSignal.any([options.signal, timeout])
       : timeout;
-    const response = await fetch(path, {
+    const response = await fetch(requestPath, {
       ...options,
       signal,
-      credentials: 'same-origin',
+      credentials,
       cache: 'no-store',
       headers: { 'Content-Type': 'application/json', ...options.headers },
     });
