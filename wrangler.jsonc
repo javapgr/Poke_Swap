@@ -1,68 +1,105 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "pokeswap-classroom",
-  "main": "src/server/index.ts",
-  "compatibility_date": "2026-09-11",
-  "compatibility_flags": ["nodejs_compat"],
-  "workers_dev": true,
-  "r2_buckets": [
-    { "binding": "AVATARS", "bucket_name": "pokeswap-classroom-avatars" },
-  ],
-  "triggers": { "crons": ["*/15 * * * *"] },
-  "ratelimits": [
-    {
-      "name": "AUTH_IP_LIMITER",
-      "namespace_id": "6515001",
-      "simple": { "limit": 120, "period": 60 },
-    },
-    {
-      "name": "AUTH_ACCOUNT_LIMITER",
-      "namespace_id": "6515002",
-      "simple": { "limit": 8, "period": 60 },
-    },
-  ],
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "pokeswap-classroom-db",
-      "database_id": "21795ed3-b5d6-4c19-9172-b908d24294c1",
-      "migrations_dir": "migrations",
-    },
-  ],
-  "env": {
-    "test": {
-      "r2_buckets": [
-        {
-          "binding": "AVATARS",
-          "bucket_name": "pokeswap-classroom-avatars-test",
-        },
-      ],
-      "triggers": { "crons": [] },
-      "ratelimits": [
-        {
-          "name": "AUTH_IP_LIMITER",
-          "namespace_id": "6515011",
-          "simple": { "limit": 120, "period": 60 },
-        },
-        {
-          "name": "AUTH_ACCOUNT_LIMITER",
-          "namespace_id": "6515012",
-          "simple": { "limit": 8, "period": 60 },
-        },
-      ],
-      "d1_databases": [
-        {
-          "binding": "DB",
-          "database_name": "pokeswap-classroom-test",
-          "database_id": "d4a280aa-d41c-4466-9f72-c3ea5437041c",
-          "migrations_dir": "migrations",
-        },
-      ],
-    },
-  },
-  "assets": {
-    "directory": "./dist/client",
-    "not_found_handling": "single-page-application",
-    "run_worker_first": ["/api", "/api/*"],
-  },
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "pokeswap-classroom",
+	"main": "src/server/index.ts",
+	"compatibility_date": "2026-09-11",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"workers_dev": true,
+	"vars": {
+	  "FRONTEND_ORIGIN": "https://poke-swap-7qfl.vercel.app",
+	},
+	"r2_buckets": [
+		{
+			"binding": "AVATARS",
+			"bucket_name": "pokeswap-classroom-avatars"
+		},
+		{
+			"bucket_name": "pokeswap-classroom-avatars",
+			"binding": "pokeswap_classroom_avatars",
+			"remote": true
+		},
+	],
+	"triggers": {
+		"crons": [
+			"*/15 * * * *"
+		]
+	},
+	"ratelimits": [
+		{
+			"name": "AUTH_IP_LIMITER",
+			"namespace_id": "6515001",
+			"simple": {
+				"limit": 120,
+				"period": 60
+			},
+		},
+		{
+			"name": "AUTH_ACCOUNT_LIMITER",
+			"namespace_id": "6515002",
+			"simple": {
+				"limit": 8,
+				"period": 60
+			},
+		},
+	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "pokeswap-classroom-db",
+			"database_id": "5a38c644-bcf0-4aba-8442-a7f90d6e32e9",
+			"migrations_dir": "migrations",
+		},
+	],
+	"env": {
+		"test": {
+		  "vars": {
+		    "FRONTEND_ORIGIN": "http://localhost:5173",
+		  },
+			"r2_buckets": [
+				{
+					"binding": "AVATARS",
+					"bucket_name": "pokeswap-classroom-avatars-test",
+				},
+			],
+			"triggers": {
+				"crons": []
+			},
+			"ratelimits": [
+				{
+					"name": "AUTH_IP_LIMITER",
+					"namespace_id": "6515011",
+					"simple": {
+						"limit": 120,
+						"period": 60
+					},
+				},
+				{
+					"name": "AUTH_ACCOUNT_LIMITER",
+					"namespace_id": "6515012",
+					"simple": {
+						"limit": 8,
+						"period": 60
+					},
+				},
+			],
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "pokeswap-classroom-test",
+					"database_id": "d4a280aa-d41c-4466-9f72-c3ea5437041c",
+					"migrations_dir": "migrations",
+				},
+			],
+		},
+	},
+	"assets": {
+		"directory": "./dist/client",
+		"not_found_handling": "single-page-application",
+		"run_worker_first": [
+			"/api",
+			"/api/*"
+		],
+	},
 }

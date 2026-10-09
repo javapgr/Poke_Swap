@@ -19,6 +19,15 @@ const app = new Hono<AuthEnv>();
 app.use('*', async (context, next) => {
   context.header('Cache-Control', 'no-store');
   context.header('X-Content-Type-Options', 'nosniff');
+  const origin = context.req.header('Origin');
+  if (origin && origin === context.env.FRONTEND_ORIGIN) {
+    context.header('Access-Control-Allow-Origin', origin);
+    context.header('Access-Control-Allow-Credentials', 'true');
+    context.header('Access-Control-Allow-Headers', 'Content-Type, Idempotency-Key, X-Profile-Version');
+    context.header('Access-Control-Allow-Methods', 'GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS');
+    context.header('Vary', 'Origin');
+  }
+  if (context.req.method === 'OPTIONS') return context.body(null, 204);
   await next();
 });
 

@@ -7,6 +7,7 @@ export type AuthEnv = {
     DB: D1Database;
     DROPS_TOKEN_SECRET?: string;
     AVATARS: R2Bucket;
+    FRONTEND_ORIGIN?: string;
     AUTH_IP_LIMITER: RateLimit;
     AUTH_ACCOUNT_LIMITER: RateLimit;
   };
@@ -55,9 +56,12 @@ export const sameOriginMutation = createMiddleware<AuthEnv>(async (c, next) => {
   if (['GET', 'HEAD', 'OPTIONS'].includes(c.req.method)) return next();
   const origin = c.req.header('Origin');
   const site = c.req.header('Sec-Fetch-Site');
+  const allowedOrigin = c.env.FRONTEND_ORIGIN;
   if (
-    origin !== new URL(c.req.url).origin ||
-    (site && !['same-origin', 'none'].includes(site))
+    (allowedOrigin
+      ? origin !== allowedOrigin
+      : origin !== new URL(c.req.url).origin) ||
+    (!allowedOrigin && site && !['same-origin', 'none'].includes(site))
   ) {
     return c.json(
       { error: 'Origen de solicitud no permitido.', code: 'INVALID_ORIGIN' },

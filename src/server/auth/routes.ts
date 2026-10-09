@@ -11,11 +11,11 @@ import {
 import { InvalidRegistration } from '../registration/input';
 import { verifyPassword } from './password';
 import {
-  cookieOptions,
   createSession,
   revokeSession,
   SESSION_COOKIE,
   SESSION_SECONDS,
+  sessionCookieOptions,
   tokenHash,
 } from './session';
 import { type AuthEnv, requireSession } from './middleware';
@@ -90,7 +90,7 @@ app.post('/register', async (c) => {
       now(),
     );
     setCookie(c, SESSION_COOKIE, session.token, {
-      ...cookieOptions,
+      ...sessionCookieOptions(Boolean(c.env.FRONTEND_ORIGIN)),
       maxAge: SESSION_SECONDS,
     });
     return c.json(
@@ -149,7 +149,7 @@ app.post('/login', async (c) => {
     now(),
   );
   setCookie(c, SESSION_COOKIE, session.token, {
-    ...cookieOptions,
+    ...sessionCookieOptions(Boolean(c.env.FRONTEND_ORIGIN)),
     maxAge: SESSION_SECONDS,
   });
   return c.json({ ...profile, session: { expiresAt: session.expiresAt } });
@@ -166,7 +166,7 @@ app.post('/logout', async (c) => {
     throw new InvalidRegistration('body', 'Envía un objeto JSON vacío.');
   await revokeSession(c.env.DB, getCookie(c, SESSION_COOKIE), now());
   setCookie(c, SESSION_COOKIE, '', {
-    ...cookieOptions,
+    ...sessionCookieOptions(Boolean(c.env.FRONTEND_ORIGIN)),
     maxAge: 0,
     expires: new Date(0),
   });

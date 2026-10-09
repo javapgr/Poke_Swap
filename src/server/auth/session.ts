@@ -6,6 +6,12 @@ export const cookieOptions = {
   sameSite: 'Lax' as const,
   path: '/',
 };
+export function sessionCookieOptions(crossOrigin: boolean) {
+  return {
+    ...cookieOptions,
+    sameSite: crossOrigin ? ('None' as const) : cookieOptions.sameSite,
+  };
+}
 
 export function randomToken(): string {
   return Array.from(crypto.getRandomValues(new Uint8Array(32)), (byte) =>
