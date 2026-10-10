@@ -8,7 +8,7 @@
 	],
 	"workers_dev": true,
 	"vars": {
-	  "FRONTEND_ORIGIN": "https://poke-swap-7qfl.vercel.app",
+	  "FRONTEND_ORIGIN": "https://pokeswap-classroom.programadorj247.workers.dev",
 	},
 	"r2_buckets": [
 		{
